@@ -1,3 +1,5 @@
+const time = require('moment')
+
 const logGenerator = (name) => {
   if (!name) return 'file.log'
 
