@@ -20,7 +20,7 @@ const {
 const {
   notFound,
   errorHandler
-} = require('./middlewares/index')
+} = require('./middlewares')
 
 // middlewares
 app.use(logger('dev'))
