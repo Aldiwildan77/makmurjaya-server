@@ -51,7 +51,7 @@ events.on(DB_CONNECTED, (msg) => {
 })
 
 events.on(SMTP_CONNECTED, (msg) => {
-  console.log('Database ' + msg)
+  console.log('Mail ' + msg)
 })
 
 // routing here
