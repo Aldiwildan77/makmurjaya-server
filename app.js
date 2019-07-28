@@ -45,6 +45,10 @@ const logStream = rfs(logGenerator(logName), {
   path: logDirectory
 })
 
+app.use(logger(NODE_ENV === 'production' ? 'combined' : 'dev', {
+  stream: logStream
+}))
+
 // events emit
 events.on(DB_CONNECTED, (msg) => {
   console.log('Database ' + msg)
