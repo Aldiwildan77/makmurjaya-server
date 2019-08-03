@@ -1,19 +1,19 @@
 const time = require('moment')
 
-const logGenerator = (name) => {
-  if (!name) return 'file.log'
+const logGenerator = name => {
+  if (name == null) return 'file.log'
 
-  const date = new Date()
+  const year = time().year()
+  const month = time().month()
+  const date = time().date()
 
-  const day = date.getDate()
-  const month = date.getMonth() + 1
-  const year = date.getFullYear()
-  const hour = date.getHours()
-  const minute = date.getMinutes()
-
-  return year + "\-" + month + day + "\-" + hour + minute + "\-" + name + ".log"
+  let logFile = year + "-" + month  + "-" + date + "-" + name + ".log"
+  return  logFile
 }
 
+const timeStampToDate = stamp => time.unix(stamp).format("YYYY/DD")
+
 module.exports = {
-  logGenerator
+  logGenerator,
+  timeStampToDate
 }

@@ -3,13 +3,12 @@ const logger = require('morgan')
 const rfs = require('rotating-file-stream')
 const fs = require('fs')
 const path = require('path')
+const graphQLHTTP = require('express-graphql')
 
 const app = express()
 const db = require('./models')
 
-const {
-  NODE_ENV
-} = require('./config/config')
+const { NODE_ENV } = require('./config/config')
 
 const {
   events,
@@ -17,10 +16,9 @@ const {
   SMTP_CONNECTED
 } = require('./config/events')
 
-const {
-  notFound,
-  errorHandler
-} = require('./middlewares')
+const { notFound, errorHandler } = require('./middlewares')
+const graphQLSchema = require('./graphql/schema')
+const graphQLResolvers = require('./graphql/resolvers')
 
 // middlewares
 app.use(logger('dev'))
@@ -31,9 +29,7 @@ app.use(express.urlencoded({
 
 // logging
 const logDirectory = path.join(__dirname, 'logs')
-const {
-  logGenerator
-} = require('./helpers/time')
+const { logGenerator } = require('./helpers/time')
 const logName = NODE_ENV.substring(0, 4).toString()
 
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
@@ -65,6 +61,13 @@ app.get('/', (req, res, next) => {
     message: "Server is running 🌈"
   })
 })
+
+// graphql routing
+app.get('/graphql', graphQLHTTP({
+  schema: graphQLSchema,
+  rootValue: graphQLResolvers,
+  graphiql: true
+}))
 
 // error handling
 app.use(notFound)
