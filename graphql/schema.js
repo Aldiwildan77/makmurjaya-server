@@ -19,8 +19,8 @@ module.exports = buildSchema(`
 
   type RootMutation {
     # Barang
-    addBarang(input: BarangInput!, satuan: SatuanInput!, kategori: KategoriInput!): Barang
-    updateBarang(id: ID!, input: BarangInput!, satuan: SatuanInput, kategori: KategoriInput): Barang
+    addBarang(input: BarangInput!, satuan: SatuanInput!, kategori: KategoriInput): Barang
+    updateBarang(id: ID!, input: BarangInput!, supplier: Supplier ,satuan: SatuanInput, kategori: KategoriInput): Barang
     deleteBarang(id: ID!): String
 
     # Kategori
@@ -32,6 +32,36 @@ module.exports = buildSchema(`
     addSatuan(input: SatuanInput!): Satuan
     updateSatuan(id: ID!, input: SatuanInput!): Satuan
     deleteSatuan(id: ID!): String
+
+    # Supplier
+    addSupplier(input: SupplierInput!): Supplier
+    updateSupplier(id: ID!, input: SupplierInput!): Supplier
+    deleteSupplier(id: ID!): String
+
+    # Karyawan
+    addKaryawan(input: KaryawanInput!): Karyawan
+    updateKaryawan(id: ID!, input: KaryawanInput!): Karyawan
+    deleteKaryawan(id: ID!): String
+
+    # Jabatan
+    addJabatan(input: JabatanInput!): Jabatan
+    updateJabatan(id: ID!, input: JabatanInput!): Jabatan
+    deleteJabatan(id: ID!): String
+
+    # Pelanggan
+    addPelanggan(input: PelangganInput!): Pelanggan
+    updatePelanggan(id: ID!, input: PelangganInput!): Pelanggan
+    deletePelanggan(id: ID!): String
+
+    # Cart
+    addCart(input: CartInput!, pelanggan: PelangganInput!): Cart
+    updateCart(id: ID!, input: CartInput!, pelanggan: PelangganInput, karyawan: KaryawanInput): Cart
+    deleteCart(id: ID!): String
+
+    # CartDetail
+    addCartDetail(input: CartDetailInput!, barang: BarangInput!): CartDetail
+    updateCartDetail(id: ID!, input: CartDetailInput!, barang: BarangInput): CartDetail
+    deleteCartDetail(id: ID!): String
   }
 
   type AuthData {
@@ -134,6 +164,42 @@ module.exports = buildSchema(`
 
   input KategoriInput {
     nama: String!
+  }
+
+  input SupplierInput {
+    nama: String!
+    telepon: String!
+    alamat: String!
+  }
+
+  input KaryawanInput {
+    nama: String!
+    username: String!
+    email: String
+    password: String
+  }
+
+  input JabatanInput {
+    nama: String!
+    level: Int!
+  }
+
+  input CartInput {
+    cartKode: String!
+    total: Float!
+    createdAt: String!
+    updatedAt: String!
+  }
+
+  input CartDetailInput {
+    quantity: Int!
+    harga: Float!
+  }
+
+  input PelangganInput {
+    nama: String!
+    telepon: String!
+    alamat: String!
   }
 
 `)
