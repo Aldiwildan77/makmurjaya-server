@@ -8,8 +8,6 @@ const {
 const Barang = require('./Barang'),
   Karyawan = require('./Karyawan'),
   Kategori = require('./Kategori'),
-  Order = require('./Order'),
-  OrderDetail = require('./OrderDetail'),
   Pelanggan = require('./Pelanggan'),
   Satuan = require('./Satuan'),
   Supplier = require('./Supplier'),

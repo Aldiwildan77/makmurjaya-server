@@ -1,10 +1,14 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Kategori = sequelize.define('Kategori', {
-    nama: DataTypes.STRING
-  }, {});
-  Kategori.associate = function(models) {
-    // associations can be defined here
-  };
+    nama: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    }
+  }, {
+    underscored: true,
+    timestamps: true
+  });
+
   return Kategori;
 };

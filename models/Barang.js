@@ -1,14 +1,33 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Barang = sequelize.define('Barang', {
-    nama: DataTypes.STRING,
-    brand: DataTypes.STRING,
-    stok: DataTypes.INTEGER,
-    hargaBeli: DataTypes.FLOAT,
-    hargaJual: DataTypes.FLOAT
-  }, {});
-  Barang.associate = function(models) {
-    // associations can be defined here
-  };
+    nama: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    brand: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    stok: { 
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        min: 0
+      }
+    },
+    hargaBeli: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    hargaJual: {
+      type: DataTypes.FLOAT,
+      allowNull: false
+    }
+  }, {
+    underscored: true,
+    timestamps: true
+  });
+  
   return Barang;
 };

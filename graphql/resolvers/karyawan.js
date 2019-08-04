@@ -37,6 +37,6 @@ const login = async (username, password) => {
   }
 }
 
-const register = () => {
-  
+const register = async () => {
+
 }

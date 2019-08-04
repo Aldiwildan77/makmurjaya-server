@@ -11,7 +11,6 @@ module.exports = buildSchema(`
     karyawan: [Karyawan!]!
     supplier: [Supplier!]!
     cart: [Cart!]!
-    order: [Order!]!
     satuan: [Satuan!]!
     kategori: [Kategori!]!
     pelanggan: [Pelanggan!]!
@@ -47,10 +46,11 @@ module.exports = buildSchema(`
     nama: String!
     brand: String!
     stok: Int!
-    satuan: Satuan!
-    kategori: Kategori!
     hargaBeli: Float!
     hargaJual: Float!
+    satuan: Satuan!
+    kategori: Kategori!
+    supplier: Supplier!
     createdAt: String!
     updatedAt: String!
   }
@@ -60,6 +60,7 @@ module.exports = buildSchema(`
     nama: String!
     telepon: String!
     alamat: String!
+    barang: [Barang!]!
   }
 
   type Karyawan {
@@ -74,34 +75,38 @@ module.exports = buildSchema(`
   type Jabatan {
     _id: ID!
     nama: String!
+    karyawan: [Karyawan!]!
   }
 
   type Cart {
     _id: ID!
     cartKode: String!
+    total: Float!
+    barang: [CartDetail!]!
+    kasir: Karyawan!
+    pelanggan: Pelanggan!
     createdAt: String!
     updatedAt: String!
-    total: Float!
-    barang: [Barang!]!
   }
 
-  type Order {
+  type CartDetail {
     _id: ID!
-    cartKode: String!
-    createdAt: String!
-    updatedAt: String!
-    total: Float!
-    barang: [Barang!]!
+    cartKode: Cart!
+    barang: Barang!
+    quantity: Int!
+    harga: Float!
   }
 
   type Satuan {
     _id: ID!
     nama: String!
+    barang: [Barang!]!
   }
 
   type Kategori {
     _id: ID!
     nama: String!
+    barang: [Barang!]!
   }
 
   type Pelanggan{
@@ -109,6 +114,7 @@ module.exports = buildSchema(`
     nama: String!
     alamat: String!
     telepon: String!
+    listOrder: [Cart!]!
   }
   
   # Input
