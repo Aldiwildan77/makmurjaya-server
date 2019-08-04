@@ -14,6 +14,7 @@ module.exports = buildSchema(`
     order: [Order!]!
     satuan: [Satuan!]!
     kategori: [Kategori!]!
+    pelanggan: [Pelanggan!]!
     login(username: String!, password: String!): AuthData!
   }
 
@@ -30,6 +31,7 @@ module.exports = buildSchema(`
   type Barang {
     _id: ID!
     nama: String!
+    brand: String!
     stok: Int!
     satuan: Satuan!
     kategori: Kategori!
@@ -87,5 +89,15 @@ module.exports = buildSchema(`
     _id: ID!
     nama: String!
   }
+
+  type Pelanggan{
+    _id: ID!
+    nama: String!
+    alamat: String!
+    telepon: String!
+  }
+  
+
+  
 
 `)
