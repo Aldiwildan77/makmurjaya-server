@@ -1,4 +1,4 @@
-const buildSchema = require('graphql')
+const { buildSchema } = require('graphql')
 
 module.exports = buildSchema(`
   schema {
@@ -19,7 +19,20 @@ module.exports = buildSchema(`
   }
 
   type RootMutation {
+    # Barang
+    addBarang(input: BarangInput!, satuan: SatuanInput!, kategori: KategoriInput!): Barang
+    updateBarang(id: ID!, input: BarangInput!, satuan: SatuanInput, kategori: KategoriInput): Barang
+    deleteBarang(id: ID!): String
 
+    # Kategori
+    addKategori(input: KategoriInput!): Kategori
+    updateKategori(id: ID!, input: KategoriInput!): Kategori
+    deleteKategori(id: ID!): String
+    
+    # Satuan
+    addSatuan(input: SatuanInput!): Satuan
+    updateSatuan(id: ID!, input: SatuanInput!): Satuan
+    deleteSatuan(id: ID!): String
   }
 
   type AuthData {
@@ -97,7 +110,23 @@ module.exports = buildSchema(`
     telepon: String!
   }
   
+  # Input
+  input BarangInput {
+    nama: String!
+    brand: String!
+    stok: Int!
+    hargaBeli: Float!
+    hargaJual: Float!
+    createdAt: String!
+    updatedAt: String!
+  }
 
-  
+  input SatuanInput {
+    nama: String!
+  }
+
+  input KategoriInput {
+    nama: String!
+  }
 
 `)

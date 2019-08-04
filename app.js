@@ -13,7 +13,8 @@ const { NODE_ENV } = require('./config/config')
 const {
   events,
   DB_CONNECTED,
-  SMTP_CONNECTED
+  SMTP_CONNECTED,
+  GRAPHQL
 } = require('./config/events')
 
 const { notFound, errorHandler } = require('./middlewares')
@@ -52,6 +53,10 @@ events.on(DB_CONNECTED, (msg) => {
 
 events.on(SMTP_CONNECTED, (msg) => {
   console.log('Mail ' + msg)
+})
+
+events.on(GRAPHQL, (msg) => {
+  console.log('GraphQL' + msg)
 })
 
 // routing here
