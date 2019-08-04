@@ -39,11 +39,17 @@ switch (NODE_ENV) {
     break;
 }
 
+const USER_TYPE = {
+  ADMIN: 'admin',
+  KASIR: 'kasir'
+}
+
 const DATABASE = database
 const AUTH_TOKEN = process.env.AUTH_TOKEN
 
 module.exports = {
   NODE_ENV,
   DATABASE,
-  AUTH_TOKEN
+  AUTH_TOKEN,
+  USER_TYPE
 }

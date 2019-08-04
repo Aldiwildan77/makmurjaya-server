@@ -68,7 +68,7 @@ app.get('/', (req, res, next) => {
 })
 
 // graphql routing
-app.get('/graphql', graphQLHTTP({
+app.use('/graphql', graphQLHTTP({
   schema: graphQLSchema,
   rootValue: graphQLResolvers,
   graphiql: true
