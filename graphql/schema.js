@@ -10,6 +10,7 @@ module.exports = buildSchema(`
     barang: [Barang!]!
     karyawan: [Karyawan!]!
     supplier: [Supplier!]!
+    jabatan: [Jabatan!]!
     cart: [Cart!]!
     satuan: [Satuan!]!
     kategori: [Kategori!]!
@@ -70,9 +71,10 @@ module.exports = buildSchema(`
 
   type AuthData {
     userId: ID!
-    username: String!
     token: String!
     tokenExp: Int!
+    userType: String!
+    scope: [String!]
   }
 
   type Barang {
@@ -101,7 +103,6 @@ module.exports = buildSchema(`
     id: ID!
     nama: String!
     username: String!
-    password: String
     email: String!
     jabatan: Jabatan!
   }

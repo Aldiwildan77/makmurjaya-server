@@ -7,10 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(20),
       primaryKey: true,
       allowNull: false,
-      unique: true,
-      set: function () {
-        this.setDataValue('id', generateId('P'))
-      }
+      unique: true
     },
     nama: {
       type: DataTypes.STRING(100),

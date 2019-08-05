@@ -31,10 +31,10 @@ const login = async ({ username, password }, context) => {
 
     return {
       userId: userExists.id,
-      scope: scope,
       userType: jabatan.nama,
       token: token,
-      tokenExp: 365
+      tokenExp: 365,
+      scope: scope,
     }
   } catch (error) {
     throw error
@@ -82,7 +82,31 @@ const register = async ({ input, jabatanLevel }, context) => {
   }
 }
 
+const karyawan = async () => {
+  try {
+    const resultKaryawan = await Karyawan.findAll({ attributes: { exclude: ['password'] } })
+    const resultJabatan = await Jabatan.findOne({ where: { id: res.dataValues.jabatan_id } })
+    return resultKaryawan.map(res => {
+      return {
+        ...res.dataValues,
+      }
+    })
+
+  } catch (error) {
+    throw error
+  }
+}
+
+const deleteKaryawan = () => {
+
+}
+
+const updateKaryawan = () => {
+
+}
+
 module.exports = {
   login,
-  register
+  register,
+  karyawan,
 }
