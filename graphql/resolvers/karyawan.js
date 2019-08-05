@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { Op, Karyawan } = require('../../models')
+const { Op, Karyawan, Jabatan } = require('../../models')
 const { AUTH_TOKEN, SCOPE_ADMIN, SCOPE_KASIR, USER_TYPE } = require('../../config/config')
+const { generateId } = require('../../helpers/generateId')
 
 const login = async ({ username, password }, context) => {
   // if(context.isLogin.include(true)) throw new Error('You are already logged in') 
@@ -17,21 +18,21 @@ const login = async ({ username, password }, context) => {
       throw new Error('username or password is incorrect')
     }
 
-    // const jabatan = await Jabatan.findOne({ where: { karyawanId: userExists.id } })
-    // let scope = jabatan.nama === USER_TYPE.ADMIN ? SCOPE_ADMIN : SCOPE_KASIR
+    const jabatan = await Jabatan.findOne({ where: { id: userExists.jabatan_id } })
+    let scope = jabatan.nama === USER_TYPE.ADMIN ? SCOPE_ADMIN : SCOPE_KASIR
 
     const token = jwt.sign({
       userId: userExists.id,
-      // scope: scope,
-      // userType: jabatan.nama
+      scope: scope,
+      userType: jabatan.nama
     }, AUTH_TOKEN, {
         expiresIn: '365d'
       })
 
     return {
       userId: userExists.id,
-      // scope: scope,
-      // userType: jabatan.nama,
+      scope: scope,
+      userType: jabatan.nama,
       token: token,
       tokenExp: 365
     }
@@ -40,13 +41,13 @@ const login = async ({ username, password }, context) => {
   }
 }
 
-const register = async (args, context) => {
+const register = async ({ input, jabatanLevel }, context) => {
   try {
-    const hashedPassword = await bcrypt.hash(args.input.password, 12)
+    const hashedPassword = await bcrypt.hash(input.password, 12)
     const checkUser = await Karyawan.findOne({
       where: {
-        [Op.or]: [{ email: args.input.email },
-        { username: args.input.username }]
+        [Op.or]: [{ email: input.email },
+        { username: input.username }]
       }
     })
 
@@ -54,11 +55,18 @@ const register = async (args, context) => {
       throw new Error('User already exist')
     }
 
+    const checkJabatan = await Jabatan.findOne({ where: { level: jabatanLevel } })
+    if (!checkJabatan) {
+      throw new Error('Jabatan doesn\'t exist')
+    }
+
     const karyawan = await Karyawan.create({
-      nama: args.input.nama,
-      username: args.input.username,
-      email: (args.input.email).toLowerCase(),
-      password: hashedPassword
+      id: generateId('K'),
+      nama: input.nama,
+      username: input.username,
+      email: (input.email).toLowerCase(),
+      password: hashedPassword,
+      jabatan_id: checkJabatan.dataValues.id
     })
 
     const saved = await karyawan.save()
@@ -66,7 +74,8 @@ const register = async (args, context) => {
       "id": saved.dataValues.id,
       "nama": saved.dataValues.nama,
       "username": saved.dataValues.username,
-      "email": saved.dataValues.email
+      "email": saved.dataValues.email,
+      "jabatan": checkJabatan
     }
   } catch (error) {
     throw error

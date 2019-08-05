@@ -19,7 +19,7 @@ module.exports = buildSchema(`
 
   type RootMutation {
     # Register Recovery
-    register(input: KaryawanInput!, jabatan: JabatanInput!): Karyawan
+    register(input: KaryawanInput!, jabatanLevel: Int!): Karyawan
     recovery(id: ID!, input: RecoveryInput!): Boolean
 
     # Barang
@@ -109,7 +109,7 @@ module.exports = buildSchema(`
   type Jabatan {
     id: ID!
     nama: String!
-    karyawan: [Karyawan!]!
+    level: Int!
   }
 
   type Cart {

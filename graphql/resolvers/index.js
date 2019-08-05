@@ -1,7 +1,9 @@
 const karyawanResolvers = require('./karyawan')
+const jabatanResolvers = require('./jabatan')
 
 const rootResolvers = {
-  ...karyawanResolvers
+  ...karyawanResolvers,
+  ...jabatanResolvers
 }
 
 module.exports = rootResolvers

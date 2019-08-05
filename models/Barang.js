@@ -1,6 +1,17 @@
 'use strict';
+const { generateId } = require('../helpers/generateId')
+
 module.exports = (sequelize, DataTypes) => {
   const Barang = sequelize.define('Barang', {
+    id: {
+      type: DataTypes.STRING(20),
+      primaryKey: true,
+      allowNull: false,
+      unique: true,
+      set: function () {
+        this.setDataValue('id', generateId('B'))
+      }
+    },
     nama: {
       type: DataTypes.STRING(100),
       allowNull: false
@@ -9,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(100),
       allowNull: false
     },
-    stok: { 
+    stok: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
@@ -25,10 +36,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   }, {
-    underscored: true,
-    timestamps: true,
-    freezeTableName: true
-  });
-  
+      underscored: true,
+      timestamps: true,
+      freezeTableName: true
+    });
+
   return Barang;
 };

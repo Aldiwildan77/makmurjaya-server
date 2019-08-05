@@ -1,6 +1,15 @@
 'use strict';
+const { generateId } = require('../helpers/generateId')
+
 module.exports = (sequelize, DataTypes) => {
   const Supplier = sequelize.define('Supplier', {
+    id: {
+      type: DataTypes.STRING(20),
+      primaryKey: true,
+      allowNull: false,
+      unique: true,
+      defaultValue: generateId('P')
+    },
     nama: {
       type: DataTypes.STRING(100),
       allowNull: false
@@ -20,10 +29,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     }
   }, {
-    underscored: true,
-    timestamps: true,
-    freezeTableName: true
-  });
+      underscored: true,
+      timestamps: true,
+      freezeTableName: true
+    });
 
   return Supplier;
 };
