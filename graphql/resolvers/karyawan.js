@@ -7,7 +7,6 @@ const login = async ({ username, password }, context) => {
   // if(context.isLogin.include(true)) throw new Error('You are already logged in') 
 
   try {
-    console.log(context)
     let userExists = await Karyawan.findOne({ where: { username } })
     if (!userExists) {
       throw new Error('User isn\'t exist')
@@ -41,7 +40,7 @@ const login = async ({ username, password }, context) => {
   }
 }
 
-const register = async (obj, args, context) => {
+const register = async (args, context) => {
   try {
     const hashedPassword = await bcrypt.hash(args.input.password, 12)
     const checkUser = await Karyawan.findOne({
