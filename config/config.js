@@ -44,6 +44,37 @@ const USER_TYPE = {
   KASIR: 'kasir'
 }
 
+const SCOPE_ADMIN = [
+  'isAdmin',
+  'verifyEmail',
+  'karyawan',
+  'karyawanLogin',
+  'karyawanRegister',
+  'addCart',
+  'updateCart',
+  'deleteCart',
+  'addCartDetail',
+  'updateCartDetail',
+  'deleteCartDetail',
+  'jabatanGrant',
+  'pelangganGrant',
+  'supplierGrant',
+  'satuanGrant'
+]
+
+const SCOPE_KASIR = [
+  'isKasir',
+  'verifyEmail',
+  'karyawanLogin',
+  'karyawanRegister',
+  'addCart',
+  'updateCart',
+  'deleteCart',
+  'addCartDetail',
+  'updateCartDetail',
+  'deleteCartDetail',
+]
+
 const DATABASE = database
 const AUTH_TOKEN = process.env.AUTH_TOKEN
 
@@ -51,5 +82,7 @@ module.exports = {
   NODE_ENV,
   DATABASE,
   AUTH_TOKEN,
-  USER_TYPE
+  USER_TYPE,
+  SCOPE_ADMIN,
+  SCOPE_KASIR
 }

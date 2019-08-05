@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
       underscored: true,
-      timestamps: true
+      timestamps: true,
+      freezeTableName: true
     });
 
   return CartDetail;

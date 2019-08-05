@@ -18,9 +18,13 @@ module.exports = buildSchema(`
   }
 
   type RootMutation {
+    # Register Recovery
+    register(input: KaryawanInput!, jabatan: JabatanInput!): Karyawan
+    recovery(id: ID!, input: RecoveryInput!): Boolean
+
     # Barang
     addBarang(input: BarangInput!, satuan: SatuanInput!, kategori: KategoriInput): Barang
-    updateBarang(id: ID!, input: BarangInput!, supplier: Supplier ,satuan: SatuanInput, kategori: KategoriInput): Barang
+    updateBarang(id: ID!, input: BarangInput!, supplier: SupplierInput ,satuan: SatuanInput, kategori: KategoriInput): Barang
     deleteBarang(id: ID!): String
 
     # Kategori
@@ -72,7 +76,7 @@ module.exports = buildSchema(`
   }
 
   type Barang {
-    _id: ID!
+    id: ID!
     nama: String!
     brand: String!
     stok: Int!
@@ -86,7 +90,7 @@ module.exports = buildSchema(`
   }
 
   type Supplier {
-    _id: ID!
+    id: ID!
     nama: String!
     telepon: String!
     alamat: String!
@@ -94,7 +98,7 @@ module.exports = buildSchema(`
   }
 
   type Karyawan {
-    _id: ID!
+    id: ID!
     nama: String!
     username: String!
     password: String
@@ -103,13 +107,13 @@ module.exports = buildSchema(`
   }
 
   type Jabatan {
-    _id: ID!
+    id: ID!
     nama: String!
     karyawan: [Karyawan!]!
   }
 
   type Cart {
-    _id: ID!
+    id: ID!
     cartKode: String!
     total: Float!
     barang: [CartDetail!]!
@@ -120,7 +124,7 @@ module.exports = buildSchema(`
   }
 
   type CartDetail {
-    _id: ID!
+    id: ID!
     cartKode: Cart!
     barang: Barang!
     quantity: Int!
@@ -128,23 +132,29 @@ module.exports = buildSchema(`
   }
 
   type Satuan {
-    _id: ID!
+    id: ID!
     nama: String!
     barang: [Barang!]!
   }
 
   type Kategori {
-    _id: ID!
+    id: ID!
     nama: String!
     barang: [Barang!]!
   }
 
   type Pelanggan{
-    _id: ID!
+    id: ID!
     nama: String!
     alamat: String!
     telepon: String!
     listOrder: [Cart!]!
+  }
+
+  type Recovery {
+    id: ID!
+    karyawan: Karyawan!
+    durasi: String!
   }
   
   # Input
@@ -200,6 +210,11 @@ module.exports = buildSchema(`
     nama: String!
     telepon: String!
     alamat: String!
+  }
+
+  input RecoveryInput {
+    karyawanId: String!
+    durasi: String!
   }
 
 `)

@@ -1,21 +1,21 @@
 const conn = require('./connection')
-const {
-  events,
-  DB_CONNECTED
-} = require('../config/events')
+const Sequelize = require('sequelize')
+const { events, DB_CONNECTED } = require('../config/events')
+const Op = require('sequelize').Op
 
 // import partly
-const Barang = require('./Barang'),
-  Karyawan = require('./Karyawan'),
-  Kategori = require('./Kategori'),
-  Pelanggan = require('./Pelanggan'),
-  Satuan = require('./Satuan'),
-  Supplier = require('./Supplier'),
-  Cart = require('./Cart'),
-  CartDetail = require('./CartDetail')
+const BarangModel = require('./Barang'),
+  KaryawanModel = require('./Karyawan'),
+  KategoriModel = require('./Kategori'),
+  PelangganModel = require('./Pelanggan'),
+  SatuanModel = require('./Satuan'),
+  SupplierModel = require('./Supplier'),
+  CartModel = require('./Cart'),
+  CartDetailModel = require('./CartDetail'),
+  JabatanModel = require('./Jabatan')
 
 // database relation here
-
+const Karyawan = KaryawanModel(conn, Sequelize)
 
 // connection sync
 conn
@@ -27,4 +27,4 @@ conn
     console.log(err)
   })
 
-module.exports = conn
+module.exports = { conn, Op, Karyawan }

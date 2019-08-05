@@ -1,10 +1,9 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Satuan = sequelize.define('Satuan', {
-    nama: {
+  const Recovery = sequelize.define('Recovery', {
+    durasi: {
       type: DataTypes.STRING(50),
       allowNull: false,
-      unique: true
     }
   }, {
     underscored: true,
@@ -12,5 +11,5 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true
   });
 
-  return Satuan;
+  return Recovery;
 };
