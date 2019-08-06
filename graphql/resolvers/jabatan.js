@@ -15,6 +15,8 @@ const jabatan = async () => {
 }
 
 const addJabatan = async (args, context) => {
+  if(!context.scope.includes('isAdmin')) throw new Error('Permission denied')
+
   try {
     const checkJabatan = await Jabatan.findOne({ where: { nama: (args.input.nama).toLowerCase() } })
     if (checkJabatan) {
@@ -37,4 +39,22 @@ const addJabatan = async (args, context) => {
   }
 }
 
-module.exports = { jabatan, addJabatan }
+const updateJabatan = async ({}, context) => {
+  if(!context.scope.includes('isAdmin')) throw new Error('Permission denied')
+  try {
+    
+  } catch (error) {
+    
+  }
+}
+
+const deleteJabatan = async ({}, context) => {
+  if(!context.scope.includes('isAdmin')) throw new Error('Permission denied')
+  try {
+    
+  } catch (error) {
+    
+  }
+}
+
+module.exports = { jabatan, addJabatan, updateJabatan, deleteJabatan }

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { AUTH_TOKEN, USER_TYPE } = require('../config/config')
+const { AUTH_TOKEN } = require('../config/config')
 const { Karyawan } = require('../models')
 
 const auth = async (req, res, next) => {
@@ -24,17 +24,12 @@ const auth = async (req, res, next) => {
         ...gtoken,
         "isLogin": true
       }
-
-      if (gtoken.userType === USER_TYPE.ADMIN) {
-        req.state.user = await Karyawan.findById(dtoken.userId)
-      } if (gtoken.userType === USER_TYPE.KASIR) {
-        req.state.user = await Karyawan.find({ where: { id: dtoken.userId }, include: [] })
-      }
     }
+
     await next()
   } catch (error) {
-    throw error
+    next(error)
   }
 }
 
-module.exports = auth
+module.exports = { auth }

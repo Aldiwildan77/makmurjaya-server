@@ -4,9 +4,7 @@ const { Op, Karyawan, Jabatan } = require('../../models')
 const { AUTH_TOKEN, SCOPE_ADMIN, SCOPE_KASIR, USER_TYPE } = require('../../config/config')
 const { generateId } = require('../../helpers/generateId')
 
-const login = async ({ username, password }, context) => {
-  // if(context.isLogin.include(true)) throw new Error('You are already logged in') 
-
+const login = async ({ username, password }, context) => { 
   try {
     let userExists = await Karyawan.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] }, include: [{ attributes: { exclude: ['createdAt', 'updatedAt'] }, model: Jabatan }], where: { username }, limit: 1 })
     if (!userExists) {

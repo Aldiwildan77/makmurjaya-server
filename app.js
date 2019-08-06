@@ -8,17 +8,16 @@ const graphQLHTTP = require('express-graphql')
 const app = express()
 const db = require('./models')
 
-const { NODE_ENV } = require('./config/config')
+const { AUTH_TOKEN, NODE_ENV } = require('./config/config')
 
 const {
   events,
   DB_CONNECTED,
   SMTP_CONNECTED,
-  GRAPHQL,
-  SEQUELIZE
+  GRAPHQL
 } = require('./config/events')
 
-const { notFound, errorHandler } = require('./middlewares')
+const { auth, notFound, errorHandler } = require('./middlewares')
 const graphQLSchema = require('./graphql/schema')
 const graphQLResolvers = require('./graphql/resolvers')
 
@@ -69,11 +68,16 @@ app.get('/', (req, res, next) => {
 })
 
 // graphql routing
-app.use('/api', graphQLHTTP({
+app.use('/api', auth, express.json(), graphQLHTTP(req => ({
   schema: graphQLSchema,
   rootValue: graphQLResolvers,
-  graphiql: true
-}))
+  graphiql: false,
+  pretty: true,
+  context: {
+    SECRET_KEY: AUTH_TOKEN,
+    ...req.state
+  }
+})))
 
 // error handling
 app.use(notFound)
