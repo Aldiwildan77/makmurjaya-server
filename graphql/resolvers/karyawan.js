@@ -8,37 +8,54 @@ const login = async ({ username, password }, context) => {
   // if(context.isLogin.include(true)) throw new Error('You are already logged in') 
 
   try {
-    let userExists = await Karyawan.findOne({ where: { username } })
-    if (!userExists) {
-      throw new Error('User isn\'t exist')
-    }
+    // let userExists = await Karyawan.findOne({ where: { username } })
+    // attributes: ['id', 'nama', 'username', 'email', 'password'],
+    let userExists = await Karyawan.findAll({
+      include: [{ model: Jabatan }, { required: false }, { where: { [Op.eq]: jabatan_id } }]{
+        id: Karyawan.id
+      }],
+      where: { [Op.and]: [{ username: { [Op.eq]: username } }] },
+      limit: 1,
+    })
 
-    const isEqual = await bcrypt.compare(password, userExists.password)
-    if (!isEqual) {
-      throw new Error('username or password is incorrect')
-    }
+  // let userExists = await Karyawan.findAll({
+  //   include: [{ model: Jabatan.id, required: false }],
+  //   where: { [Op.and]: [{ username: { [Op.eq]: username } }] },
+  //   limit: 1,
+  // })
 
-    const jabatan = await Jabatan.findOne({ where: { id: userExists.jabatan_id } })
-    let scope = jabatan.nama === USER_TYPE.ADMIN ? SCOPE_ADMIN : SCOPE_KASIR
-
-    const token = jwt.sign({
-      userId: userExists.id,
-      scope: scope,
-      userType: jabatan.nama
-    }, AUTH_TOKEN, {
-        expiresIn: '365d'
-      })
-
-    return {
-      userId: userExists.id,
-      userType: jabatan.nama,
-      token: token,
-      tokenExp: 365,
-      scope: scope,
-    }
-  } catch (error) {
-    throw error
+  console.log(userExists)
+  return { userExists }
+  if (!userExists) {
+    throw new Error('User isn\'t exist')
   }
+
+  const isEqual = await bcrypt.compare(password, userExists.password)
+  if (!isEqual) {
+    throw new Error('username or password is incorrect')
+  }
+
+  const jabatan = await Jabatan.findOne({ where: { id: userExists.jabatan_id } })
+  let scope = jabatan.nama === USER_TYPE.ADMIN ? SCOPE_ADMIN : SCOPE_KASIR
+
+  const token = jwt.sign({
+    userId: userExists.id,
+    scope: scope,
+    userType: jabatan.nama
+  }, AUTH_TOKEN, {
+      expiresIn: '365d'
+    })
+
+  return {
+    userId: userExists.id,
+    userType: jabatan.nama,
+    token: token,
+    tokenExp: 365,
+    scope: scope,
+  }
+} catch (error) {
+  throw error
+}
 }
 
 const register = async ({ input, jabatanLevel }, context) => {
