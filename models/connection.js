@@ -1,6 +1,5 @@
 const { DATABASE } = require('../config/config')
 const Sequelize = require('sequelize')
-
 const {
   DB_HOST,
   DB_NAME,
@@ -19,7 +18,8 @@ const conn = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
     max: POOL_SIZE,
     acquire: 30000,
     idle: 1000
-  }, operatorAliases: false
+  }, 
+  operatorAliases: false
 })
 
 module.exports = conn

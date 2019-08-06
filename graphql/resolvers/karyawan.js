@@ -8,73 +8,57 @@ const login = async ({ username, password }, context) => {
   // if(context.isLogin.include(true)) throw new Error('You are already logged in') 
 
   try {
-    // let userExists = await Karyawan.findOne({ where: { username } })
-    // attributes: ['id', 'nama', 'username', 'email', 'password'],
-    let userExists = await Karyawan.findAll({
-      include: [{ model: Jabatan }, { required: false }, { where: { [Op.eq]: jabatan_id } }]{
-        id: Karyawan.id
-      }],
-      where: { [Op.and]: [{ username: { [Op.eq]: username } }] },
-      limit: 1,
-    })
+    let userExists = await Karyawan.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] }, include: [{ attributes: { exclude: ['createdAt', 'updatedAt'] }, model: Jabatan }], where: { username }, limit: 1 })
+    if (!userExists) {
+      throw new Error('User isn\'t exist')
+    }
 
-  // let userExists = await Karyawan.findAll({
-  //   include: [{ model: Jabatan.id, required: false }],
-  //   where: { [Op.and]: [{ username: { [Op.eq]: username } }] },
-  //   limit: 1,
-  // })
+    const isEqual = await bcrypt.compare(password, userExists[0].password)
+    if (!isEqual) {
+      throw new Error('username or password is incorrect')
+    }
 
-  console.log(userExists)
-  return { userExists }
-  if (!userExists) {
-    throw new Error('User isn\'t exist')
+    const jabatan = {
+      ...userExists[0].Jabatan.dataValues
+    }
+    let scope = jabatan.nama === USER_TYPE.ADMIN ? SCOPE_ADMIN : SCOPE_KASIR
+
+    const token = jwt.sign({
+      userId: userExists[0].id,
+      scope: scope,
+      userType: jabatan.nama
+    }, AUTH_TOKEN, {
+        expiresIn: '365d'
+      })
+
+    return {
+      userId: userExists[0].id,
+      userType: jabatan.nama,
+      token: token,
+      tokenExp: 365,
+      scope: scope,
+    }
+  } catch (error) {
+    throw error
   }
-
-  const isEqual = await bcrypt.compare(password, userExists.password)
-  if (!isEqual) {
-    throw new Error('username or password is incorrect')
-  }
-
-  const jabatan = await Jabatan.findOne({ where: { id: userExists.jabatan_id } })
-  let scope = jabatan.nama === USER_TYPE.ADMIN ? SCOPE_ADMIN : SCOPE_KASIR
-
-  const token = jwt.sign({
-    userId: userExists.id,
-    scope: scope,
-    userType: jabatan.nama
-  }, AUTH_TOKEN, {
-      expiresIn: '365d'
-    })
-
-  return {
-    userId: userExists.id,
-    userType: jabatan.nama,
-    token: token,
-    tokenExp: 365,
-    scope: scope,
-  }
-} catch (error) {
-  throw error
-}
 }
 
 const register = async ({ input, jabatanLevel }, context) => {
   try {
     const hashedPassword = await bcrypt.hash(input.password, 12)
+    const checkJabatan = await Jabatan.findOne({ where: { level: jabatanLevel } })
+    if (!checkJabatan) {
+      throw new Error('Jabatan doesn\'t exist')
+    }
+    
     const checkUser = await Karyawan.findOne({
       where: {
         [Op.or]: [{ email: input.email },
         { username: input.username }]
       }
     })
-
     if (checkUser) {
       throw new Error('User already exist')
-    }
-
-    const checkJabatan = await Jabatan.findOne({ where: { level: jabatanLevel } })
-    if (!checkJabatan) {
-      throw new Error('Jabatan doesn\'t exist')
     }
 
     const karyawan = await Karyawan.create({
