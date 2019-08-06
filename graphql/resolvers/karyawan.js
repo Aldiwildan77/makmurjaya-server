@@ -89,6 +89,7 @@ const karyawan = async (obj, {}, context) => {
   try {
     const resultKaryawan = await Karyawan.findAll({ attributes: { exclude: ['password'] } })
     const resultJabatan = await Jabatan.findOne({ where: { id: res.dataValues.jabatan_id } })
+    
     return resultKaryawan.map(res => {
       return {
         ...res.dataValues,

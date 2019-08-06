@@ -36,3 +36,5 @@ const auth = async (req, res, next) => {
     throw error
   }
 }
+
+module.exports = auth

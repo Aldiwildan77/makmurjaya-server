@@ -14,7 +14,8 @@ const {
   events,
   DB_CONNECTED,
   SMTP_CONNECTED,
-  GRAPHQL
+  GRAPHQL,
+  SEQUELIZE
 } = require('./config/events')
 
 const { notFound, errorHandler } = require('./middlewares')
@@ -47,15 +48,15 @@ app.use(logger(NODE_ENV === 'production' ? 'combined' : 'dev', {
 }))
 
 // events emit
-events.on(DB_CONNECTED, (msg) => {
+events.on(DB_CONNECTED, msg => {
   console.log('Database ' + msg)
 })
 
-events.on(SMTP_CONNECTED, (msg) => {
+events.on(SMTP_CONNECTED, msg => {
   console.log('Mail ' + msg)
 })
 
-events.on(GRAPHQL, (msg) => {
+events.on(GRAPHQL, msg => {
   console.log('GraphQL' + msg)
 })
 

@@ -28,20 +28,54 @@ const Karyawan = KaryawanModel(conn, Sequelize),
   Recovery = RecoveryModel(conn, Sequelize)
 
 // 1:N 
-Jabatan.hasMany(Karyawan, { foreignKey: 'jabatan_id', as: 'Karyawan' })
-Karyawan.belongsTo(Jabatan, { foreignKey: 'jabatan_id' })
+Jabatan.hasMany(Karyawan, { foreignKey: { name: 'jabatan_id', allowNull: false } })
+Karyawan.belongsTo(Jabatan, { foreignKey: { name: 'jabatan_id', allowNull: false } })
 
 // 1:1
-Karyawan.hasOne(Recovery, { foreignKey: 'karyawan_id' })
-Recovery.belongsTo(Karyawan, { foreignKey: 'karyawan_id' })
+Karyawan.hasOne(Recovery, { foreignKey: { name: 'karyawan_id', allowNull: false } })
+Recovery.belongsTo(Karyawan, { foreignKey: { name: 'karyawan_id', allowNull: false } })
 
 // 1:1
-Pelanggan.hasOne(Cart, { foreignKey: 'pelanggan_id' })
-Cart.belongsTo(Pelanggan, { foreignKey: 'pelanggan_id' })
+Karyawan.hasOne(Cart, { foreignKey: { name: 'karyawan_id', allowNull: false } })
+Cart.belongsTo(Karyawan, { foreignKey: { name: 'karyawan_id', allowNull: false } })
 
 // 1:1
-Karyawan.hasOne(Cart, { foreignKey: 'karyawan_id' })
-Cart.belongsTo(Karyawan, { foreignKey: 'karyawan_id' })
+Pelanggan.hasOne(Cart, { foreignKey: { name: 'pelanggan_id', allowNull: false } })
+Cart.belongsTo(Pelanggan, { foreignKey: { name: 'pelanggan_id', allowNull: false } })
+
+// N:M
+Cart.belongsToMany(Barang, {
+  through: CartDetail,
+  foreignKey: {
+    name: 'cartKode',
+    allowNull: false
+  },
+  as: 'items'
+})
+Barang.belongsToMany(Cart, {
+  through: CartDetail,
+  foreignKey: {
+    name: 'barang_id',
+    allowNull: false
+  }
+})
+
+// 1:1
+Karyawan.hasOne(Cart, { foreignKey: { name: 'karyawan_id', allowNull: false } })
+Cart.belongsTo(Karyawan, { foreignKey: { name: 'karyawan_id', allowNull: false } })
+
+// 1:N
+Satuan.hasMany(Barang, { foreignKey: { name: 'satuan_id', allowNull: false } })
+Barang.belongsTo(Satuan, { foreignKey: { name: 'satuan_id', allowNull: false } })
+
+// 1:N
+Kategori.hasMany(Barang, { foreignKey: { name: 'kategori_id', allowNull: false } })
+Barang.belongsTo(Kategori, { foreignKey: { name: 'kategori_id', allowNull: false } })
+
+// 1:N
+Supplier.hasMany(Barang, { foreignKey: { name: 'supplier_id', allowNull: false } })
+Barang.belongsTo(Supplier, { foreignKey: { name: 'supplier_id', allowNull: false } })
+
 
 // connection sync
 conn
