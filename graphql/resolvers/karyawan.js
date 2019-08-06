@@ -50,7 +50,7 @@ const register = async ({ input, jabatanLevel }, context) => {
     if (!checkJabatan) {
       throw new Error('Jabatan doesn\'t exist')
     }
-    
+
     const checkUser = await Karyawan.findOne({
       where: {
         [Op.or]: [{ email: input.email },
@@ -83,7 +83,9 @@ const register = async ({ input, jabatanLevel }, context) => {
   }
 }
 
-const karyawan = async () => {
+const karyawan = async (obj, {}, context) => {
+  // if(!context) throw new Error('Permission denied')
+
   try {
     const resultKaryawan = await Karyawan.findAll({ attributes: { exclude: ['password'] } })
     const resultJabatan = await Jabatan.findOne({ where: { id: res.dataValues.jabatan_id } })
