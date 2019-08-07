@@ -4,9 +4,22 @@ const { Op, Karyawan, Jabatan } = require('../../models')
 const { AUTH_TOKEN, SCOPE_ADMIN, SCOPE_KASIR, USER_TYPE } = require('../../config/config')
 const { generateId } = require('../../helpers/generateId')
 
-const login = async ({ username, password }, context) => { 
+const login = async ({ username, password }, context) => {
   try {
-    let userExists = await Karyawan.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] }, include: [{ attributes: { exclude: ['createdAt', 'updatedAt'] }, model: Jabatan }], where: { username }, limit: 1 })
+    let userExists = await Karyawan.findAll({
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
+      },
+      include: [{
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        },
+        model: Jabatan
+      }],
+      where: { username },
+      limit: 1
+    })
+
     if (!userExists) {
       throw new Error('User isn\'t exist')
     }
@@ -81,13 +94,14 @@ const register = async ({ input, jabatanLevel }, context) => {
   }
 }
 
-const karyawan = async (obj, {}, context) => {
+const karyawan = async (obj, { }, context) => {
   // if(!context) throw new Error('Permission denied')
 
+  // PAKE DATALOADER 
   try {
     const resultKaryawan = await Karyawan.findAll({ attributes: { exclude: ['password'] } })
     const resultJabatan = await Jabatan.findOne({ where: { id: res.dataValues.jabatan_id } })
-    
+
     return resultKaryawan.map(res => {
       return {
         ...res.dataValues,
