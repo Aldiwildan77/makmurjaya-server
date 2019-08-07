@@ -7,14 +7,32 @@ module.exports = buildSchema(`
   }
 
   type RootQuery {
+    # Barang All - Specific
     barang: [Barang!]!
+
+    # Karyawan All - Specific
     karyawan: [Karyawan!]!
+
+    # Supplier All - Specific
     supplier: [Supplier!]!
+
+    # Jabatan All - Specific
     jabatan: [Jabatan!]!
+
+    # Cart All - Specific
     cart: [Cart!]!
+
+    # Satuan All - Specific
     satuan: [Satuan!]!
+    satuanByFilter(filter: String): [Satuan!]!
+
+    # Kategori All - Specific
     kategori: [Kategori!]!
+
+    # Pelanggan All - Specific
     pelanggan: [Pelanggan!]!
+
+    # Login
     login(username: String!, password: String!): AuthData!
   }
 

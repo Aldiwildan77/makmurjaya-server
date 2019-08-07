@@ -1,8 +1,8 @@
-const { Kategori } = require('../../models')
+const { Op, Kategori } = require('../../models')
 
 const kategori = async () => {
   try {
-    const result = await Kategori.findAll({ attributes: ['id', 'nama']})
+    const result = await Kategori.findAll({ attributes: ['id', 'nama'] })
     return result.map(res => {
       return {
         ...res.dataValues
@@ -18,7 +18,7 @@ const addKategori = async ({ input }, context) => {
   if (!context.scope.includes('kategoriGrant')) throw new Error('Permission denied')
 
   try {
-    const checkKategori = await Kategori.findOne({ where: { nama: input.nama.toLowerCase() } })
+    const checkKategori = await Kategori.findOne({ where: { nama: { [Op.eq]: input.nama.toLowerCase() } } })
     if (checkKategori) {
       throw new Error('Kategori already exist')
     }
@@ -41,7 +41,7 @@ const updateKategori = async ({ id, input }, context) => {
   if (!context.scope.includes('kategoriGrant')) throw new Error('Permission denied')
 
   try {
-    const checkKategori = await Kategori.findOne({ where: { id } })
+    const checkKategori = await Kategori.findOne({ where: { id: { [Op.eq]: id } } })
     if (!checkKategori) {
       throw new Error('those Kategori isn\'t exist')
     }
@@ -53,7 +53,7 @@ const updateKategori = async ({ id, input }, context) => {
 
     const [numOfAffectedRow, updatedKategori] = await Kategori.update(update, {
       where: {
-        id: id
+        id: { [Op.eq]: id }
       },
       returning: true
     })
@@ -71,12 +71,12 @@ const deleteKategori = async ({ id }, context) => {
   if (!context.scope.includes('kategoriGrant')) throw new Error('Permission denied')
 
   try {
-    const checkKategori = await Kategori.findOne({ where: { id } })
+    const checkKategori = await Kategori.findOne({ where: { id: { [Op.eq]: id } } })
     if (!checkKategori) {
       throw new Error('those Kategori isn\'t exist')
     }
 
-    const deletedKategori = await Kategori.destroy({ where: { id } })
+    const deletedKategori = await Kategori.destroy({ where: { id: { [Op.eq]: id } } })
     if (!deletedKategori) {
       throw new Error('unable to delete Kategori, please check the relation')
     }

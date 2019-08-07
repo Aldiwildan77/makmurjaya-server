@@ -1,9 +1,31 @@
-const { Satuan } = require('../../models')
+const { Op, Satuan } = require('../../models')
 const { generateId } = require('../../helpers/generateId')
 
 const satuan = async () => {
   try {
     const result = await Satuan.findAll({ attributes: ['id', 'nama'] })
+    return result.map(res => {
+      return {
+        ...res.dataValues
+      }
+    })
+  } catch (error) {
+    throw error
+  }
+}
+
+const satuanByFilter = async ({ filter }) => {
+  try {
+    const result = await Satuan.findAll({
+      attributes: ['id', 'nama'],
+      where: {
+        [Op.or]: [
+          { id: { [Op.eq]: filter } },
+          { nama: { [Op.substring]: filter } }
+        ]
+      }
+    })
+
     return result.map(res => {
       return {
         ...res.dataValues
@@ -43,7 +65,7 @@ const updateSatuan = async ({ id, input }, context) => {
   if (!context.scope.includes('satuanGrant')) throw new Error('Permission denied')
 
   try {
-    const checkSatuan = await Satuan.findOne({ where: { id } })
+    const checkSatuan = await Satuan.findOne({ where: { id: { [Op.eq]: id } } })
     if (!checkSatuan) {
       throw new Error('those Satuan isn\'t exist')
     }
@@ -55,7 +77,7 @@ const updateSatuan = async ({ id, input }, context) => {
 
     const [numOfAffectedRow, updatedSatuan] = await Satuan.update(update, {
       where: {
-        id: id
+        id: { [Op.eq]: id }
       },
       returning: true
     })
@@ -73,12 +95,12 @@ const deleteSatuan = async ({ id }, context) => {
   if (!context.scope.includes('satuanGrant')) throw new Error('Permission denied')
 
   try {
-    const checkSatuan = await Satuan.findOne({ where: { id } })
+    const checkSatuan = await Satuan.findOne({ where: { id: { [Op.eq]: id } } })
     if (!checkSatuan) {
       throw new Error('those Satuan isn\'t exist')
     }
 
-    const deletedSatuan = await Satuan.destroy({ where: { id } })
+    const deletedSatuan = await Satuan.destroy({ where: { id: { [Op.eq]: id } } })
     if (!deletedSatuan) {
       throw new Error('unable to delete Satuan, please check the relation')
     }
@@ -89,4 +111,4 @@ const deleteSatuan = async ({ id }, context) => {
   }
 }
 
-module.exports = { satuan, addSatuan, updateSatuan, deleteSatuan }
+module.exports = { satuan, addSatuan, updateSatuan, deleteSatuan, satuanByFilter }

@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     }, 
     level: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      defaultValue: 1
+      allowNull: false,
+      unique: true
     }
   }, {
     underscored: true,

@@ -16,7 +16,7 @@ const login = async ({ username, password }, context) => {
         },
         model: Jabatan
       }],
-      where: { username },
+      where: { username: { [Op.eq]: username } },
       limit: 1
     })
 
@@ -57,15 +57,15 @@ const login = async ({ username, password }, context) => {
 const register = async ({ input, jabatanLevel }, context) => {
   try {
     const hashedPassword = await bcrypt.hash(input.password, 12)
-    const checkJabatan = await Jabatan.findOne({ where: { level: jabatanLevel } })
+    const checkJabatan = await Jabatan.findOne({ where: { level: { [Op.eq]: jabatanLevel } } })
     if (!checkJabatan) {
       throw new Error('Jabatan doesn\'t exist')
     }
 
     const checkUser = await Karyawan.findOne({
       where: {
-        [Op.or]: [{ email: input.email },
-        { username: input.username }]
+        [Op.or]: [{ email: { [Op.eq]: input.email } },
+        { username: { [Op.eq]: input.username } }]
       }
     })
     if (checkUser) {

@@ -1,4 +1,4 @@
-const { Jabatan } = require('../../models')
+const { Op, Jabatan } = require('../../models')
 
 const jabatan = async () => {
   try {
@@ -18,7 +18,7 @@ const addJabatan = async ({ input }, context) => {
   if (!context.scope.includes('isAdmin')) throw new Error('Permission denied')
 
   try {
-    const checkJabatan = await Jabatan.findOne({ where: { nama: input.nama.toLowerCase() } })
+    const checkJabatan = await Jabatan.findOne({ where: { nama: { [Op.eq]: input.nama.toLowerCase() } } })
     if (checkJabatan) {
       throw new Error('Jabatan already exist')
     }
@@ -56,7 +56,7 @@ const updateJabatan = async ({ id, input }, context) => {
 
     const [numOfAffectedRow, updatedJabatan] = await Jabatan.update(update, {
       where: {
-        id: id
+        id: { [Op.eq]: id }
       },
       returning: true
     })
@@ -74,12 +74,12 @@ const deleteJabatan = async ({ id }, context) => {
   if (!context.scope.includes('isAdmin')) throw new Error('Permission denied')
 
   try {
-    const checkJabatan = await Jabatan.findOne({ where: { id } })
+    const checkJabatan = await Jabatan.findOne({ where: { id: { [Op.eq]: id } } })
     if (!checkJabatan) {
       throw new Error('those Jabatan isn\'t exist')
     }
 
-    const deletedJabatan = await Jabatan.destroy({ where: { id } })
+    const deletedJabatan = await Jabatan.destroy({ where: { id: { [Op.eq]: id } } })
     if (!deletedJabatan) {
       throw new Error('unable to delete Jabatan, please check the relation')
     }
