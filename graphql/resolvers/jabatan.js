@@ -2,7 +2,7 @@ const { Jabatan } = require('../../models')
 
 const jabatan = async () => {
   try {
-    const result = await Jabatan.findAll()
+    const result = await Jabatan.findAll({ attributes: ['id', 'nama', 'level'] })
     return result.map(res => {
       return {
         ...res.dataValues
@@ -54,7 +54,12 @@ const updateJabatan = async ({ id, input }, context) => {
       level: input.level
     }
 
-    const updatedJabatan = await Jabatan.update({ update }, { where: { id: id } })
+    const [numOfAffectedRow, updatedJabatan] = await Jabatan.update(update, {
+      where: {
+        id: id
+      },
+      returning: true
+    })
     if (!updatedJabatan) {
       throw new Error('failed to update Jabatan please check your input')
     }
@@ -62,7 +67,6 @@ const updateJabatan = async ({ id, input }, context) => {
     return {
       ...update
     }
-
   } catch (error) {
     throw error
   }
