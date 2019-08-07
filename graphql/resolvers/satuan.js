@@ -85,7 +85,7 @@ const deleteSatuan = async ({ id }, context) => {
       throw new Error('unable to delete Satuan, please check the relation')
     }
 
-    return `Satuan ${deletedSatuan.dataValues.nama} has been deleted`
+    return `Satuan ${checkSatuan.dataValues.nama} has been deleted`
   } catch (error) {
     throw error
   }
