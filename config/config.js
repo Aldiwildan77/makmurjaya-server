@@ -59,7 +59,8 @@ const SCOPE_ADMIN = [
   'jabatanGrant',
   'pelangganGrant',
   'supplierGrant',
-  'satuanGrant'
+  'satuanGrant',
+  'kategoriGrant'
 ]
 
 const SCOPE_KASIR = [

@@ -140,7 +140,6 @@ module.exports = buildSchema(`
   type Kategori {
     id: ID!
     nama: String!
-    barang: [Barang!]!
   }
 
   type Pelanggan{

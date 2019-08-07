@@ -63,9 +63,7 @@ const updateSatuan = async ({ id, input }, context) => {
       throw new Error('failed to update Satuan please check your input')
     }
 
-    return {
-      ...update
-    }
+    return { ...update }
   } catch (error) {
     throw error
   }
