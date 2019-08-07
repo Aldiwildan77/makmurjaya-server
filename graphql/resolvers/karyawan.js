@@ -54,10 +54,10 @@ const login = async ({ username, password }, context) => {
   }
 }
 
-const register = async ({ input, jabatanLevel }, context) => {
+const register = async ({ input, jabatan }, context) => {
   try {
     const hashedPassword = await bcrypt.hash(input.password, 12)
-    const checkJabatan = await Jabatan.findOne({ where: { level: { [Op.eq]: jabatanLevel } } })
+    const checkJabatan = await Jabatan.findOne({ where: { id: { [Op.eq]: jabatan } } })
     if (!checkJabatan) {
       throw new Error('Jabatan doesn\'t exist')
     }
@@ -81,13 +81,13 @@ const register = async ({ input, jabatanLevel }, context) => {
       jabatan_id: checkJabatan.dataValues.id
     })
 
-    const saved = await karyawan.save()
+    const { dataValues } = await karyawan.save()
     return {
-      "id": saved.dataValues.id,
-      "nama": saved.dataValues.nama,
-      "username": saved.dataValues.username,
-      "email": saved.dataValues.email,
-      "jabatan": checkJabatan
+      id: dataValues.id,
+      nama: dataValues.nama,
+      username: dataValues.username,
+      email: dataValues.email,
+      jabatan: checkJabatan
     }
   } catch (error) {
     throw error
