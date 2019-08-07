@@ -28,8 +28,8 @@ const Karyawan = KaryawanModel(conn, Sequelize),
   Recovery = RecoveryModel(conn, Sequelize)
 
 // 1:N 
-Jabatan.hasMany(Karyawan, { foreignKey: { name: 'jabatan_id', allowNull: false } })
-Karyawan.belongsTo(Jabatan, { foreignKey: { name: 'jabatan_id', allowNull: false } })
+Jabatan.hasMany(Karyawan, { foreignKey: { name: 'jabatan_level', allowNull: false } })
+Karyawan.belongsTo(Jabatan, { foreignKey: { name: 'jabatan_level', allowNull: false } })
 
 // 1:1
 Karyawan.hasOne(Recovery, { foreignKey: { name: 'karyawan_id', allowNull: false } })

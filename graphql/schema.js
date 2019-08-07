@@ -122,6 +122,7 @@ module.exports = buildSchema(`
     nama: String!
     username: String!
     email: String!
+    jabatan_level: Int!
     jabatan: Jabatan!
   }
 

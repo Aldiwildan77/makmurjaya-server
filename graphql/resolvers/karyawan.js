@@ -100,11 +100,17 @@ const karyawan = async (obj, { }, context) => {
   // PAKE DATALOADER 
   try {
     const resultKaryawan = await Karyawan.findAll({ attributes: { exclude: ['password'] } })
-    const resultJabatan = await Jabatan.findOne({ where: { id: res.dataValues.jabatan_id } })
+    // const resultJabatan = await Jabatan.findOne({
+    //   where: {
+    //     level: {
+    //       [Op.eq]: res.dataValues.jabatan_level
+    //     }
+    //   }
+    // })
 
     return resultKaryawan.map(res => {
       return {
-        ...res.dataValues,
+        ...res.dataValues
       }
     })
 

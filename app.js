@@ -9,6 +9,7 @@ const app = express()
 const db = require('./models')
 
 const { AUTH_TOKEN, NODE_ENV } = require('./config/config')
+const { logGenerator } = require('./helpers/time')
 
 const {
   events,
@@ -22,7 +23,6 @@ const graphQLSchema = require('./graphql/schema')
 const graphQLResolvers = require('./graphql/resolvers')
 
 // middlewares
-app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({
   extended: true
@@ -30,9 +30,7 @@ app.use(express.urlencoded({
 
 // logging
 const logDirectory = path.join(__dirname, 'logs')
-const { logGenerator } = require('./helpers/time')
-const logName = NODE_ENV.substring(0, 4).toString()
-
+const logName = NODE_ENV.substring(0, 3).toString()
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
 
 const logStream = rfs(logGenerator(logName), {
