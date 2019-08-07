@@ -28,11 +28,11 @@ const addJabatan = async ({ input }, context) => {
       level: input.level
     })
 
-    const saved = await jabatan.save()
+    const { dataValues } = await jabatan.save()
     return {
-      "id": saved.dataValues.id,
-      "nama": saved.dataValues.nama,
-      "level": saved.dataValues.level
+      id: dataValues.id,
+      nama: dataValues.nama,
+      level: dataValues.level
     }
   } catch (error) {
     throw error
@@ -50,7 +50,7 @@ const updateJabatan = async ({ id, input }, context) => {
 
     const update = {
       id: id,
-      nama: input.nama,
+      nama: input.nama.toLowerCase(),
       level: input.level
     }
 

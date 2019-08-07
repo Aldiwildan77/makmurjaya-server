@@ -135,7 +135,6 @@ module.exports = buildSchema(`
   type Satuan {
     id: ID!
     nama: String!
-    barang: [Barang!]!
   }
 
   type Kategori {
