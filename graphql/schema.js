@@ -40,6 +40,7 @@ module.exports = buildSchema(`
     # Register Recovery
     register(input: KaryawanInput!, jabatan: Int!): Karyawan
     recovery(id: ID!, input: RecoveryInput!): Boolean
+    changePassword(id: ID!, input: PasswordInput!): String
 
     # Barang
     addBarang(input: BarangInput!, satuan: SatuanInput!, kategori: KategoriInput): Barang
@@ -63,7 +64,7 @@ module.exports = buildSchema(`
 
     # Karyawan
     addKaryawan(input: KaryawanInput!): Karyawan
-    updateKaryawan(id: ID!, input: KaryawanInput!): Karyawan
+    updateKaryawan(id: ID!, input: KaryawanUpdate!): Karyawan
     deleteKaryawan(id: ID!): String
 
     # Jabatan
@@ -205,6 +206,14 @@ module.exports = buildSchema(`
     username: String!
     email: String
     password: String
+    jabatan_id: Int!
+  }
+
+  input KaryawanUpdate {
+    nama: String
+    username: String
+    email: String
+    jabatan_id: Int
   }
 
   input JabatanInput {
@@ -235,4 +244,8 @@ module.exports = buildSchema(`
     durasi: String!
   }
 
+  input PasswordInput {
+    password: String!
+    confirmPassword: String!
+  }
 `)

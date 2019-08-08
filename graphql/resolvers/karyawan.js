@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const _ = require('lodash')
+
 const { Op, Karyawan, Jabatan } = require('../../models')
 const { AUTH_TOKEN, SCOPE_ADMIN, SCOPE_KASIR, USER_TYPE } = require('../../config/config')
 const { generateId } = require('../../helpers/generateId')
@@ -119,16 +121,59 @@ const karyawan = async (obj, { }, context) => {
   }
 }
 
-const deleteKaryawan = () => {
+const updateKaryawan = async ({ id, input }, context) => {
+  if (!context.scope.includes('isAdmin')) throw new Error('Permission denied')
 
+  try {
+    const checkKaryawan = await Karyawan.findOne({
+      attributes: {
+        exclude: ['password', 'createdAt', 'updatedAt']
+      }, where: { id: { [Op.eq]: id } }
+    })
+    if (!checkKaryawan) {
+      throw new Error('unable to find Karyawan')
+    }
+
+    const [numOfAffectedRow, updatedKaryawan] = await Karyawan.update(input, {
+      where: {
+        id: {
+          [Op.eq]: id
+        }
+      },
+      returning: true
+    })
+    if (!updatedKaryawan) {
+      throw new Error('failed to update Karyawan please check your input')
+    }
+
+    const mergedUpdate = await _.merge(checkKaryawan.dataValues, input)
+    return {
+      ...mergedUpdate
+    }
+
+  } catch (error) {
+    throw error
+  }
 }
 
-const updateKaryawan = () => {
+const deleteKaryawan = async ({ id }, context) => {
+  if (!context.scope.includes('isAdmin')) throw new Error('Permission denied')
 
+  try {
+    const checkKaryawan = await Karyawan.findOne({ where: { id: { [Op.eq]: id } } })
+    if (!checkKaryawan) {
+      throw new Error('those Jabatan isn\'t exist')
+    }
+
+    const deletedKaryawan = await Karyawan.destroy({ where: { id: { [Op.eq]: id } } })
+    if (!deletedKaryawan) {
+      throw new Error('unable to delete Karyawan, please check the relation')
+    }
+
+    return `Karyawan ${checkKaryawan.dataValues.nama} has been deleted`
+  } catch (error) {
+    throw error
+  }
 }
 
-module.exports = {
-  login,
-  register,
-  karyawan,
-}
+module.exports = { login, register, karyawan, updateKaryawan, deleteKaryawan }
