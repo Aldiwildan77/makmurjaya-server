@@ -24,6 +24,7 @@ const addKategori = async ({ input }, context) => {
     }
 
     const kategori = await Kategori.create({
+      id: generateId('M'),
       nama: input.nama.toLowerCase(),
     })
 

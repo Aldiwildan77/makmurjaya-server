@@ -1,6 +1,4 @@
 'use strict';
-const { generateId } = require('../helpers/generateId')
-
 module.exports = (sequelize, DataTypes) => {
   const Supplier = sequelize.define('Supplier', {
     id: {
@@ -12,6 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     nama: {
       type: DataTypes.STRING(100),
       allowNull: false
+    },
+    alias: {
+      type: DataTypes.STRING(5),
+      allowNull: false,
+      unique: true
     },
     telepon: {
       type: DataTypes.STRING(16),

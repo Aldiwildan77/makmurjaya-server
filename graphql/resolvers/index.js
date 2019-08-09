@@ -1,13 +1,17 @@
-const karyawanResolvers = require('./karyawan')
-const jabatanResolvers = require('./jabatan')
-const satuanResolvers = require('./satuan')
-const kategoriResolvers = require('./kategori')
+const karyawanResolvers = require('./karyawan'),
+  jabatanResolvers = require('./jabatan'),
+  satuanResolvers = require('./satuan'),
+  kategoriResolvers = require('./kategori'),
+  supplierResolvers = require('./supllier')
+
 
 const rootResolvers = {
   ...karyawanResolvers,
   ...jabatanResolvers,
   ...satuanResolvers,
-  ...kategoriResolvers
+  ...kategoriResolvers,
+  ...supplierResolvers
+
 }
 
 module.exports = rootResolvers

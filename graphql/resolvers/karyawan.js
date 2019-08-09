@@ -97,24 +97,38 @@ const register = async ({ input, jabatan }, context) => {
 }
 
 const karyawan = async (obj, { }, context) => {
-  // if(!context) throw new Error('Permission denied')
-
-  // PAKE DATALOADER 
   try {
-    const resultKaryawan = await Karyawan.findAll({ attributes: { exclude: ['password'] } })
-    // const resultJabatan = await Jabatan.findOne({
-    //   where: {
-    //     level: {
-    //       [Op.eq]: res.dataValues.jabatan_level
-    //     }
-    //   }
-    // })
-
-    return resultKaryawan.map(res => {
-      return {
-        ...res.dataValues
+    const resultKaryawan = await Karyawan.findAll({
+      attributes: {
+        exclude: ['password', 'createdAt', 'updatedAt']
+      },
+      include: {
+        model: Jabatan,
+        attributes: [['nama', 'jabatan_nama'], ['level', 'jabatan_level']],
       }
     })
+
+    let objectReturn = []
+    resultKaryawan.forEach(k => {
+      let { dataValues, Jabatan } = k
+
+      let object = {
+        id: dataValues.id,
+        nama: dataValues.nama,
+        username: dataValues.username,
+        email: dataValues.email,
+        jabatan_id: dataValues.jabatan_id,
+        jabatan: {
+          id: dataValues.jabatan_id,
+          nama: Jabatan.dataValues.jabatan_nama,
+          level: Jabatan.dataValues.jabatan_level
+        }
+      }
+
+      objectReturn.push(object)
+    });
+
+    return objectReturn
 
   } catch (error) {
     throw error

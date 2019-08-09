@@ -113,6 +113,7 @@ module.exports = buildSchema(`
   type Supplier {
     id: ID!
     nama: String!
+    alias: String!
     telepon: String!
     alamat: String!
     barang: [Barang!]!
@@ -197,6 +198,7 @@ module.exports = buildSchema(`
 
   input SupplierInput {
     nama: String!
+    alias: String!
     telepon: String!
     alamat: String!
   }

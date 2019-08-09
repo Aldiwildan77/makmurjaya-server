@@ -1,9 +1,0 @@
-npx sequelize model:generate --name Barang --attributes nama:String,brand:String,stok:Integer,hargaBeli:float,hargaJual:float --force;
-npx sequelize model:generate --name Supplier --attributes nama:String,telepon:String,alamat:String --force;
-npx sequelize model:generate --name Karyawan --attributes nama:String,username:String,password:String,email:String --force;
-npx sequelize model:generate --name Jabatan --attributes nama:String --force;
-npx sequelize model:generate --name Cart --attributes cartKode:String,total:Float --force;
-npx sequelize model:generate --name Order --attributes cartKode:String,total:Float --force;
-npx sequelize model:generate --name Satuan --attributes nama:String --force;
-npx sequelize model:generate --name Kategori --attributes nama:String --force;
-npx sequelize model:generate --name Pelanggan --attributes nama:String,alamat:String,telepon:String --force;
