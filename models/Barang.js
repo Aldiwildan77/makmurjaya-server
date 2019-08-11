@@ -1,14 +1,6 @@
 'use strict';
-const { generateId } = require('../helpers/generateId')
-
 module.exports = (sequelize, DataTypes) => {
   const Barang = sequelize.define('Barang', {
-    id: {
-      type: DataTypes.STRING(20),
-      primaryKey: true,
-      allowNull: false,
-      unique: true
-    },
     nama: {
       type: DataTypes.STRING(100),
       allowNull: false

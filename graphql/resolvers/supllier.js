@@ -3,6 +3,36 @@ const { generateId } = require('../../helpers/generateId')
 
 const supplier = async () => {
   try {
+    const resultSupplier = await Supplier.findAll({
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
+      },
+      include: {
+        model: Barang,
+        attributes: {
+          exclude: ['harga_jual', 'createdAt', 'updatedAt']
+        }
+      }
+    })
+
+    let objectReturn = []
+    resultSupplier.forEach(s => {
+      let { dataValues, Barang } = s
+
+      let object = {
+        id: dataValues.id,
+        nama: dataValues.nama,
+        alias: dataValues.alias,
+        telepon: dataValues.telepon,
+        alamat: dataValues.alamat
+      }
+
+      objectReturn.push(object)
+    });
+
+    return objectReturn
+
+
 
   } catch (error) {
     throw error

@@ -8,7 +8,7 @@ const { generateId } = require('../../helpers/generateId')
 
 const login = async ({ username, password }, context) => {
   try {
-    let userExists = await Karyawan.findAll({
+    let userExists = await Karyawan.findOne({
       attributes: {
         exclude: ['createdAt', 'updatedAt']
       },
@@ -18,26 +18,23 @@ const login = async ({ username, password }, context) => {
         },
         model: Jabatan
       }],
-      where: { username: { [Op.eq]: username } },
-      limit: 1
+      where: { username: { [Op.eq]: username } }
     })
 
     if (!userExists) {
       throw new Error('User isn\'t exist')
     }
 
-    const isEqual = await bcrypt.compare(password, userExists[0].password)
+    const isEqual = await bcrypt.compare(password, userExists.password)
     if (!isEqual) {
       throw new Error('username or password is incorrect')
     }
 
-    const jabatan = {
-      ...userExists[0].Jabatan.dataValues
-    }
+    const jabatan = await _.get(userExists.dataValues, 'Jabatan')
     let scope = jabatan.nama === USER_TYPE.ADMIN ? SCOPE_ADMIN : SCOPE_KASIR
 
-    const token = jwt.sign({
-      userId: userExists[0].id,
+    const token = await jwt.sign({
+      userId: userExists.id,
       scope: scope,
       userType: jabatan.nama
     }, AUTH_TOKEN, {
@@ -45,7 +42,7 @@ const login = async ({ username, password }, context) => {
       })
 
     return {
-      userId: userExists[0].id,
+      userId: userExists.id,
       userType: jabatan.nama,
       token: token,
       tokenExp: 365,
@@ -56,10 +53,10 @@ const login = async ({ username, password }, context) => {
   }
 }
 
-const register = async ({ input, jabatan }, context) => {
+const register = async ({ input }, context) => {
   try {
     const hashedPassword = await bcrypt.hash(input.password, 12)
-    const checkJabatan = await Jabatan.findOne({ where: { id: { [Op.eq]: jabatan } } })
+    const checkJabatan = await Jabatan.findOne({ where: { id: { [Op.eq]: input.jabatan_id } } })
     if (!checkJabatan) {
       throw new Error('Jabatan doesn\'t exist')
     }
@@ -75,12 +72,11 @@ const register = async ({ input, jabatan }, context) => {
     }
 
     const karyawan = await Karyawan.create({
-      id: generateId('K'),
       nama: input.nama,
       username: input.username,
       email: (input.email).toLowerCase(),
       password: hashedPassword,
-      jabatan_id: checkJabatan.dataValues.id
+      jabatan_id: input.jabatan_id
     })
 
     const { dataValues } = await karyawan.save()

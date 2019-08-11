@@ -1,12 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Supplier = sequelize.define('Supplier', {
-    id: {
-      type: DataTypes.STRING(20),
-      primaryKey: true,
-      allowNull: false,
-      unique: true
-    },
     nama: {
       type: DataTypes.STRING(100),
       allowNull: false

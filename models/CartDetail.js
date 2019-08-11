@@ -1,14 +1,6 @@
 'use strict';
-const { generateId } = require('../helpers/generateId')
-
 module.exports = (sequelize, DataTypes) => {
   const CartDetail = sequelize.define('CartDetail', {
-    id: {
-      type: DataTypes.STRING(20),
-      primaryKey: true,
-      allowNull: false,
-      unique: true
-    },
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,

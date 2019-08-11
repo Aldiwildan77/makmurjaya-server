@@ -1,23 +1,20 @@
 'use strict';
-const { generateId } = require('../helpers/generateId')
-
 module.exports = (sequelize, DataTypes) => {
   const Recovery = sequelize.define('Recovery', {
-    id: {
-      type: DataTypes.STRING(20),
-      primaryKey: true,
+    token: {
+      type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
     },
-    durasi: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
+    recoveryExpired: {
+      type: DataTypes.DATE,
+      allowNull: false
     }
   }, {
-    underscored: true,
-    timestamps: true,
-    freezeTableName: true
-  });
+      underscored: true,
+      timestamps: true,
+      freezeTableName: true
+    });
 
   return Recovery;
 };
