@@ -88,8 +88,8 @@ const forgotPassword = async ({ input }, context) => {
 }
 
 const resetPassword = async ({ token, input }, context) => {
-  if ((input.password).length < 8) {
-    throw new Error('Passwords must be at least 8 characters in length')
+  if ((input.password).length < 8 || (input.password).length > 15) {
+    throw new Error('Passwords must be at 8 - 15 characters in length')
   }
 
   if (!_.isEqual(input.password, input.confirmPassword)) {
@@ -100,7 +100,14 @@ const resetPassword = async ({ token, input }, context) => {
     const hashedPassword = await bycrpt.hash(input.password, 12)
     const checkToken = await Recovery.findOne({ where: { token: { [Op.eq]: token } } })
     if (!checkToken) {
-      throw new Error('recovery token doesn\'t exist')
+      throw new Error('Recovery token doesn\'t exist')
+    }
+
+    let exp = new Date(checkToken.recoveryExpired).getTime()
+    let now = new Date(Date.now()).getTime()
+
+    if (exp < now) {
+      throw new Error('Your token is expired, please re-send your recovery request again')
     }
 
     const [numOfAffectedRow, updatedKaryawan] = await Karyawan.update({ password: hashedPassword }, {
@@ -113,7 +120,7 @@ const resetPassword = async ({ token, input }, context) => {
     })
 
     if (!updatedKaryawan) {
-      throw new Error('failed to update Karyawan please check your input')
+      throw new Error('Failed to update Karyawan please check your input')
     }
 
     await Recovery.destroy({ where: { karyawan_id: { [Op.eq]: checkToken.karyawan_id } } })

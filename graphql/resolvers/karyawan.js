@@ -53,6 +53,10 @@ const login = async ({ username, password }, context) => {
 }
 
 const register = async ({ input }, context) => {
+  if ((input.password).length < 8 || (input.password).length > 15) {
+    throw new Error('Passwords must be at 8 - 15 characters in length')
+  }
+
   try {
     const hashedPassword = await bcrypt.hash(input.password, 12)
     const checkJabatan = await Jabatan.findOne({ where: { id: { [Op.eq]: input.jabatan_id } } })
