@@ -39,6 +39,13 @@ switch (NODE_ENV) {
     break;
 }
 
+const MAILER = {
+  HOST: process.env.SMTP_HOST,
+  PORT: process.env.SMTP_PORT,
+  USER: process.env.SMTP_USER,
+  PASS: process.env.SMTP_PASS
+}
+
 const USER_TYPE = {
   ADMIN: 'admin',
   KASIR: 'kasir'
@@ -84,6 +91,7 @@ module.exports = {
   DATABASE,
   AUTH_TOKEN,
   USER_TYPE,
+  MAILER,
   SCOPE_ADMIN,
   SCOPE_KASIR
 }

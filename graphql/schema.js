@@ -6,6 +6,8 @@ module.exports = buildSchema(`
     mutation: RootMutation
   }
 
+  scalar Date
+
   type RootQuery {
     # Barang All - Specific
     barang: [Barang!]!
@@ -39,8 +41,8 @@ module.exports = buildSchema(`
   type RootMutation {
     # Register Recovery
     register(input: KaryawanInput!): Karyawan
-    recovery(id: ID!, input: RecoveryInput!): Boolean
-    changePassword(id: ID!, input: PasswordInput!): String
+    forgotPassword(input: String!): String
+    resetPassword(token: String!, input: PasswordInput!): String
 
     # Barang
     addBarang(input: BarangInput!, satuan: SatuanInput!, kategori: KategoriInput): Barang
@@ -79,7 +81,7 @@ module.exports = buildSchema(`
 
     # Cart
     addCart(input: CartInput!, pelanggan: PelangganInput!): Cart
-    updateCart(id: ID!, input: CartInput!, pelanggan: PelangganInput, karyawan: KaryawanInput): Cart
+    updateCart(id: ID!, input: CartInput!, pelanggan: PelangganInput, karyawan: KaryawanUpdate): Cart
     deleteCart(id: ID!): String
 
     # CartDetail
@@ -173,8 +175,8 @@ module.exports = buildSchema(`
 
   type Recovery {
     id: ID!
-    karyawan: Karyawan!
-    durasi: String!
+    token: String!
+    recoveryExpired: Date!
   }
   
   # Input

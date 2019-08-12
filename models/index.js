@@ -32,6 +32,10 @@ Jabatan.hasMany(Karyawan, { foreignKey: { name: 'jabatan_id', allowNull: false }
 Karyawan.belongsTo(Jabatan, { foreignKey: { name: 'jabatan_id', allowNull: false } })
 
 // 1:1
+Karyawan.hasOne(Recovery, { foreignKey: { name: 'karyawan_id', allowNull: false } })
+Recovery.belongsTo(Karyawan, { foreignKey: { name: 'karyawan_id', allowNull: false } })
+
+// 1:1
 Karyawan.hasOne(Cart, { foreignKey: { name: 'karyawan_id', allowNull: false } })
 Cart.belongsTo(Karyawan, { foreignKey: { name: 'karyawan_id', allowNull: false } })
 

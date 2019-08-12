@@ -4,7 +4,6 @@ const _ = require('lodash')
 
 const { Op, Karyawan, Jabatan } = require('../../models')
 const { AUTH_TOKEN, SCOPE_ADMIN, SCOPE_KASIR, USER_TYPE } = require('../../config/config')
-const { generateId } = require('../../helpers/generateId')
 
 const login = async ({ username, password }, context) => {
   try {
