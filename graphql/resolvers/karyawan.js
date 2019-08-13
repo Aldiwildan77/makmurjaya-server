@@ -160,10 +160,7 @@ const updateKaryawan = async ({ id, input }, context) => {
     }
 
     const mergedUpdate = await _.merge(checkKaryawan.dataValues, input)
-    return {
-      ...mergedUpdate
-    }
-
+    return mergedUpdate
   } catch (error) {
     throw error
   }

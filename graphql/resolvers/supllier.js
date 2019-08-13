@@ -49,7 +49,6 @@ const addSupplier = async ({ input }, context) => {
     }
 
     const Supplier = await Supplier.create({
-      id: generateId('S'),
       nama: input.nama,
       alias: input.alias.toUpperCase(),
       telepon: input.telepon,
@@ -81,9 +80,9 @@ const updateSupplier = async ({ id, input }, context) => {
     const update = {
       id: id,
       nama: input.nama,
-      alias: dataValues.alias,
-      telepon: dataValues.telepon,
-      alamat: dataValues.alamat
+      alias: input.alias,
+      telepon: input.telepon,
+      alamat: input.alamat
     }
 
     const [numOfAffectedRow, updatedSupplier] = await Supplier.update(update, {
@@ -96,7 +95,7 @@ const updateSupplier = async ({ id, input }, context) => {
       throw new Error('failed to update Supplier please check your input')
     }
 
-    return { ...update }
+    return update
   } catch (error) {
     throw error
   }

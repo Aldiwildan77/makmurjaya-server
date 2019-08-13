@@ -62,7 +62,7 @@ const updateKategori = async ({ id, input }, context) => {
       throw new Error('failed to update Kategori please check your input')
     }
 
-    return { ...update }
+    return update
   } catch (error) {
     throw error
   }

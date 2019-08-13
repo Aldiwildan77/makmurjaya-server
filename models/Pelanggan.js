@@ -6,18 +6,17 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     telepon: {
-      type: DataTypes.STRING(16),
-      allowNull: true,
+      type: DataTypes.STRING(18),
+      allowNull: false,
       unique: true,
       validate: {
-        is: /^\+?([62|0])([0-9]+)$/,
-        not: ["[a-zA-Z]", "i"],
-        max: 16
+        is: /^(\+62|0)([0-9]{7,12})$/,
+        not: ["[a-zA-Z]", "i"]
       }
     },
     alamat: {
       type: DataTypes.STRING(100),
-      allowNull: true
+      allowNull: false
     }
   }, {
     underscored: true,

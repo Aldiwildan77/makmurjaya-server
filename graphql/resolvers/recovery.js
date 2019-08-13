@@ -55,6 +55,7 @@ const forgotPassword = async ({ input }, context) => {
   if (_.isEmpty(input) || _.isUndefined(input)) throw new Error('Input can\'t be a null or undefined value')
 
   try {
+    let token = await uuidv4()
     const checkUser = await Karyawan.findOne({
       attributes: {
         exclude: ['password', 'createdAt', 'updatedAt']
@@ -68,7 +69,6 @@ const forgotPassword = async ({ input }, context) => {
       throw new Error('User doesn\'t exist, please check your username or email')
     }
 
-    let token = uuidv4()
     const insertRecovery = await Recovery.create({
       token: token,
       recoveryExpired: Date.now() + 1800000,

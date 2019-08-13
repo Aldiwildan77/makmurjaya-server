@@ -3,7 +3,10 @@ const { generateId } = require('../../helpers/generateId')
 
 const satuan = async () => {
   try {
-    const result = await Satuan.findAll({ attributes: ['id', 'nama'] })
+    const result = await Satuan.findAll({
+      attributes: ['id', 'nama'],
+      order: [['id', 'ASC']]
+    })
     return result.map(res => {
       return {
         ...res.dataValues
@@ -46,7 +49,6 @@ const addSatuan = async ({ input }, context) => {
     }
 
     const satuan = await Satuan.create({
-      id: generateId('T'),
       nama: input.nama.toLowerCase()
     })
 
@@ -85,7 +87,7 @@ const updateSatuan = async ({ id, input }, context) => {
       throw new Error('failed to update Satuan please check your input')
     }
 
-    return { ...update }
+    return update
   } catch (error) {
     throw error
   }

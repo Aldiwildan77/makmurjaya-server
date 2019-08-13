@@ -64,7 +64,7 @@ const updateJabatan = async ({ id, input }, context) => {
       throw new Error('failed to update Jabatan please check your input')
     }
 
-    return { ...update }
+    return update
   } catch (error) {
     throw error
   }
