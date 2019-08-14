@@ -15,9 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       unique: true,
       validate: {
-        is: /^\+?([62|0])([0-9]+)$/,
-        not: ["[a-zA-Z]", "i"],
-        max: 16
+        is: /^(\+62|0)([0-9]{7,12})$/,
+        not: ["[a-zA-Z]", "i"]
       }
     },
     alamat: {

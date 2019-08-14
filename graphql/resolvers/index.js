@@ -4,7 +4,9 @@ const karyawanResolvers = require('./karyawan'),
   kategoriResolvers = require('./kategori'),
   supplierResolvers = require('./supllier'),
   recoveryResolvers = require('./recovery'),
-  pelangganResolvers = require('./pelanggan')
+  pelangganResolvers = require('./pelanggan'),
+  barangResolvers = require('./barang'),
+  cartResolvers = require('./cart')
 
 
 const rootResolvers = {
@@ -14,7 +16,9 @@ const rootResolvers = {
   ...kategoriResolvers,
   ...supplierResolvers,
   ...recoveryResolvers,
-  ...pelangganResolvers
+  ...pelangganResolvers,
+  ...barangResolvers,
+  ...cartResolvers
 }
 
 module.exports = rootResolvers

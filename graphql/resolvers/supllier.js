@@ -1,4 +1,5 @@
-const { Supplier } = require('../../models')
+const { Op, Barang, Supplier } = require('../../models')
+const _ = require('lodash')
 
 const supplier = async () => {
   try {
@@ -30,9 +31,6 @@ const supplier = async () => {
     });
 
     return objectReturn
-
-
-
   } catch (error) {
     throw error
   }
@@ -47,21 +45,15 @@ const addSupplier = async ({ input }, context) => {
       throw new Error('Supplier already exist')
     }
 
-    const Supplier = await Supplier.create({
+    const supplier = await Supplier.create({
       nama: input.nama,
       alias: input.alias.toUpperCase(),
       telepon: input.telepon,
       alamat: input.alamat
     })
 
-    const { dataValues } = await Supplier.save()
-    return {
-      id: dataValues.id,
-      nama: dataValues.nama,
-      alias: dataValues.alias,
-      telepon: dataValues.telepon,
-      alamat: dataValues.alamat
-    }
+    const { dataValues } = await supplier.save()
+    return dataValues
   } catch (error) {
     throw error
   }
@@ -76,15 +68,7 @@ const updateSupplier = async ({ id, input }, context) => {
       throw new Error('those Supplier isn\'t exist')
     }
 
-    const update = {
-      id: id,
-      nama: input.nama,
-      alias: input.alias,
-      telepon: input.telepon,
-      alamat: input.alamat
-    }
-
-    const [numOfAffectedRow, updatedSupplier] = await Supplier.update(update, {
+    const [numOfAffectedRow, updatedSupplier] = await Supplier.update(input, {
       where: {
         id: { [Op.eq]: id }
       },
@@ -94,7 +78,8 @@ const updateSupplier = async ({ id, input }, context) => {
       throw new Error('failed to update Supplier please check your input')
     }
 
-    return update
+    const mergedUpdate = await _.merge(checkSupplier.dataValues, input)
+    return mergedUpdate
   } catch (error) {
     throw error
   }

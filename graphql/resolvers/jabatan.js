@@ -29,11 +29,7 @@ const addJabatan = async ({ input }, context) => {
     })
 
     const { dataValues } = await jabatan.save()
-    return {
-      id: dataValues.id,
-      nama: dataValues.nama,
-      level: dataValues.level
-    }
+    return dataValues
   } catch (error) {
     throw error
   }

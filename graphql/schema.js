@@ -45,9 +45,10 @@ module.exports = buildSchema(`
     resetPassword(token: String!, input: PasswordInput!): String
 
     # Barang
-    addBarang(input: BarangInput!, satuan: SatuanInput!, kategori: KategoriInput): Barang
-    updateBarang(id: ID!, input: BarangInput!, supplier: SupplierInput ,satuan: SatuanInput, kategori: KategoriInput): Barang
+    addBarang(input: BarangInput!): Barang
+    updateBarang(id: ID!, input: BarangUpdate!): Barang
     deleteBarang(id: ID!): String
+    stokBarang(id: ID!, stok: Int!): Barang
 
     # Kategori
     addKategori(input: KategoriInput!): Kategori
@@ -61,7 +62,7 @@ module.exports = buildSchema(`
 
     # Supplier
     addSupplier(input: SupplierInput!): Supplier
-    updateSupplier(id: ID!, input: SupplierInput!): Supplier
+    updateSupplier(id: ID!, input: SupplierUpdate!): Supplier
     deleteSupplier(id: ID!): String
 
     # Karyawan
@@ -105,11 +106,9 @@ module.exports = buildSchema(`
     stok: Int!
     hargaBeli: Float!
     hargaJual: Float!
-    satuan: Satuan!
-    kategori: Kategori!
-    supplier: Supplier!
-    createdAt: String!
-    updatedAt: String!
+    kategori_id: ID!
+    supplier_id: ID!
+    satuan_id: ID!
   }
 
   type Supplier {
@@ -126,7 +125,7 @@ module.exports = buildSchema(`
     nama: String!
     username: String!
     email: String!
-    jabatan_id: Int!
+    jabatan_id: ID!
     jabatan: Jabatan!
   }
 
@@ -186,8 +185,19 @@ module.exports = buildSchema(`
     stok: Int!
     hargaBeli: Float!
     hargaJual: Float!
-    createdAt: String!
-    updatedAt: String!
+    supplier_id: ID!
+    kategori_id: ID!
+    satuan_id: ID!
+  }
+
+  input BarangUpdate {
+    nama: String
+    brand: String
+    hargaBeli: Float
+    hargaJual: Float
+    supplier_id: ID
+    kategori_id: ID
+    satuan_id: ID
   }
 
   input SatuanInput {
@@ -205,19 +215,26 @@ module.exports = buildSchema(`
     alamat: String!
   }
 
+  input SupplierUpdate {
+    nama: String
+    alias: String
+    telepon: String
+    alamat: String
+  }
+
   input KaryawanInput {
     nama: String!
     username: String!
     email: String
     password: String
-    jabatan_id: Int!
+    jabatan_id: ID!
   }
 
   input KaryawanUpdate {
     nama: String
     username: String
     email: String
-    jabatan_id: Int
+    jabatan_id: ID
   }
 
   input JabatanInput {

@@ -41,12 +41,7 @@ const addPelanggan = async ({ input }, context) => {
       alamat: input.alamat
     })
     const { dataValues } = await pelanggan.save()
-    return {
-      id: dataValues.id,
-      nama: dataValues.nama,
-      telepon: dataValues.telepon,
-      alamat: dataValues.alamat
-    }
+    return dataValues
   } catch (error) {
     throw error
   }

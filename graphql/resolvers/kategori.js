@@ -24,15 +24,11 @@ const addKategori = async ({ input }, context) => {
     }
 
     const kategori = await Kategori.create({
-      id: generateId('M'),
       nama: input.nama.toLowerCase(),
     })
 
     const { dataValues } = await kategori.save()
-    return {
-      id: dataValues.id,
-      nama: dataValues.nama
-    }
+    return dataValues
   } catch (error) {
     throw error
   }

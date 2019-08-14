@@ -67,7 +67,9 @@ const SCOPE_ADMIN = [
   'pelangganGrant',
   'supplierGrant',
   'satuanGrant',
-  'kategoriGrant'
+  'kategoriGrant',
+  'barangGrant',
+  'stokGrant'
 ]
 
 const SCOPE_KASIR = [
@@ -81,6 +83,7 @@ const SCOPE_KASIR = [
   'addCartDetail',
   'updateCartDetail',
   'deleteCartDetail',
+  'stokGrant'
 ]
 
 const DATABASE = database

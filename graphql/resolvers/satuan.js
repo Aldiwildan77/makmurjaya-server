@@ -52,11 +52,7 @@ const addSatuan = async ({ input }, context) => {
     })
 
     const { dataValues } = await satuan.save()
-    return {
-      id: dataValues.id,
-      nama: dataValues.nama,
-    }
-
+    return dataValues
   } catch (error) {
     throw error
   }

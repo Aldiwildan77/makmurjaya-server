@@ -78,7 +78,8 @@ Supplier.hasMany(Barang, { foreignKey: { name: 'supplier_id', allowNull: false }
 Barang.belongsTo(Supplier, { foreignKey: { name: 'supplier_id', allowNull: false } })
 
 const { runSeed } = require('../seeders')
-let force = NODE_ENV === 'production' ? false : true
+// let force = NODE_ENV === 'production' ? false : true
+let force = false
 
 // connection sync
 conn
