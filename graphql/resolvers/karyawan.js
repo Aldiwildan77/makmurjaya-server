@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const _ = require('lodash')
 
 const { Op, Karyawan, Jabatan } = require('../../models')
-const { AUTH_TOKEN, SCOPE_ADMIN, SCOPE_KASIR, USER_TYPE } = require('../../config/config')
+const { AUTH_TOKEN, SCOPE_ADMIN, SCOPE_KASIR, USER_TYPE } = require('../../config')
 
 const login = async ({ username, password }, context) => {
   try {
@@ -30,7 +30,7 @@ const login = async ({ username, password }, context) => {
     }
 
     const jabatan = await _.get(userExists.dataValues, 'Jabatan')
-    let scope = jabatan.nama === USER_TYPE.ADMIN ? SCOPE_ADMIN : SCOPE_KASIR
+    let scope = (jabatan.nama).toLowerCase() === USER_TYPE.ADMIN ? SCOPE_ADMIN : SCOPE_KASIR
 
     const token = await jwt.sign({
       userId: userExists.id,

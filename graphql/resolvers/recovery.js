@@ -4,7 +4,7 @@ const bycrpt = require('bcrypt')
 const _ = require('lodash')
 
 const { Op, Karyawan, Recovery } = require('../../models')
-const { NODE_ENV, MAILER } = require('../../config/config')
+const { NODE_ENV, MAILER } = require('../../config')
 
 const sendMail = async (email, token) => {
   let transporter = await nodemailer.createTransport({

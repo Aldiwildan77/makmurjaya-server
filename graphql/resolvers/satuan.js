@@ -1,5 +1,4 @@
 const { Op, Satuan } = require('../../models')
-const { generateId } = require('../../helpers/generateId')
 
 const satuan = async () => {
   try {

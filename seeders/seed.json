@@ -1,0 +1,18 @@
+{
+  "karyawan": {
+    "nama": "Al",
+    "username": "Aldiwildan77",
+    "email": "aldiwild77@gmail.com",
+    "password": "qweasd123",
+    "jabatan_id": 1
+  },
+  "jabatan": [{
+      "nama": "Admin",
+      "level": 99
+    },
+    {
+      "nama": "Kasir",
+      "level": 1
+    }
+  ]
+}

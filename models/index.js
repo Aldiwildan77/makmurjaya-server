@@ -1,6 +1,7 @@
 const conn = require('./connection')
 const Sequelize = require('sequelize')
-const { events, DB_CONNECTED } = require('../config/events')
+
+const { events, DB_CONNECTED, DB_FORCED, NODE_ENV } = require('../config')
 const Op = require('sequelize').Op
 
 // import partly
@@ -76,12 +77,18 @@ Barang.belongsTo(Kategori, { foreignKey: { name: 'kategori_id', allowNull: false
 Supplier.hasMany(Barang, { foreignKey: { name: 'supplier_id', allowNull: false } })
 Barang.belongsTo(Supplier, { foreignKey: { name: 'supplier_id', allowNull: false } })
 
+const { runSeed } = require('../seeders')
+let force = NODE_ENV === 'production' ? false : true
 
 // connection sync
 conn
-  .sync()
+  .sync({ force })
   .then(async _ => {
     events.emit(DB_CONNECTED, "connected")
+    if (force) {
+      events.emit(DB_FORCED, "forced")
+      await runSeed()
+    }
   })
   .catch(err => {
     console.log(err)

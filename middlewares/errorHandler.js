@@ -1,4 +1,4 @@
-const { NODE_ENV } = require('../config/config')
+const { NODE_ENV } = require('../config')
 
 function notFound(req, res, next) {
   const error = new Error('Not Found - ' + req.originalUrl)

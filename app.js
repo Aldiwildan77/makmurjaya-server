@@ -8,17 +8,18 @@ const graphQLHTTP = require('express-graphql')
 const app = express()
 const db = require('./models')
 
-const { AUTH_TOKEN, NODE_ENV } = require('./config/config')
-const { logGenerator } = require('./helpers/time')
-
-const {
+const { AUTH_TOKEN,
+  NODE_ENV,
   events,
   DB_CONNECTED,
   SMTP_CONNECTED,
-  GRAPHQL
-} = require('./config/events')
-
+  GRAPHQL,
+  DB_FORCED
+} = require('./config')
+const { logGenerator } = require('./helpers/time')
 const { auth, notFound, errorHandler } = require('./middlewares')
+
+// graphql
 const graphQLSchema = require('./graphql/schema')
 const graphQLResolvers = require('./graphql/resolvers')
 
@@ -55,6 +56,10 @@ events.on(SMTP_CONNECTED, msg => {
 
 events.on(GRAPHQL, msg => {
   console.log('GraphQL' + msg)
+})
+
+events.on(DB_FORCED, msg => {
+  console.log('Database ' + msg)
 })
 
 // routing here

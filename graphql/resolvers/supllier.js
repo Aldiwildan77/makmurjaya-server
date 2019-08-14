@@ -1,5 +1,4 @@
 const { Supplier } = require('../../models')
-const { generateId } = require('../../helpers/generateId')
 
 const supplier = async () => {
   try {
